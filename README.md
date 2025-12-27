@@ -1,153 +1,169 @@
+<div align="center">
+
 # 🌐 Service SOAP avec Apache CXF
 
-[![Apache CXF](https://img.shields.io/badge/Apache%20CXF-3.5.5-blue.svg)](https://cxf.apache.org/)
-[![Java](https://img.shields.io/badge/Java-11+-orange.svg)](https://www.oracle.com/java/)
-[![WS-Security](https://img.shields.io/badge/WS--Security-UsernameToken-green.svg)](https://docs.oasis-open.org/wss/)
-[![Status](https://img.shields.io/badge/Status-Production%20Ready-success.svg)]()
+<img src="https://img.shields.io/badge/Apache%20CXF-3.5.5-007ACC?style=for-the-badge&logo=apache&logoColor=white" alt="Apache CXF"/>
+<img src="https://img.shields.io/badge/Java-11+-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white" alt="Java"/>
+<img src="https://img.shields.io/badge/WS--Security-UsernameToken-4CAF50?style=for-the-badge&logo=springsecurity&logoColor=white" alt="WS-Security"/>
+<img src="https://img.shields.io/badge/Maven-3.6+-C71A36?style=for-the-badge&logo=apachemaven&logoColor=white" alt="Maven"/>
 
-Service web SOAP sécurisé utilisant Apache CXF et JAX-WS, conforme aux standards Java EE pour les services web.
+<br/><br/>
 
-> 🔐 **Service sécurisé avec WS-Security UsernameToken**
-> 🧪 **100% testé** avec client Java, curl et SoapUI
-> 📚 **Documentation complète** avec guides et exemples
+**🚀 Service web SOAP sécurisé utilisant Apache CXF et JAX-WS**
+
+*Conforme aux standards Java EE pour les services web d'entreprise*
+
+<br/>
+
+[🎯 Objectif](#-objectif) •
+[🚀 Démarrage](#-démarrage-rapide) •
+[🧪 Tests](#-tests) •
+[🔐 Sécurité](#-sécurité-ws-security) •
+[� Docs](#-ressources)
+
+</div>
 
 ---
 
-## 📋 Table des matières
+## ✨ Fonctionnalités Clés
 
-- [🎯 Objectif](#-objectif)
-- [🚀 Démarrage rapide](#-démarrage-rapide)
-- [📁 Structure du projet](#-structure-du-projet)
-- [🧪 Tests](#-tests)
-- [🔐 Sécurité WS-Security](#-sécurité-ws-security)
-- [🛠️ Technologies utilisées](#️-technologies-utilisées)
-- [📝 Fonctionnalités](#-fonctionnalités)
-- [✅ Validation complète](#-validation-complète)
-- [📚 Ressources](#-ressources)
+<table>
+<tr>
+<td width="33%" align="center">
+
+### 🔐
+### Sécurisé
+WS-Security avec<br/>UsernameToken
+
+</td>
+<td width="33%" align="center">
+
+### 🧪
+### Testé
+100% couvert avec<br/>curl, SoapUI, Java
+
+</td>
+<td width="33%" align="center">
+
+### 📚
+### Documenté
+Guides complets<br/>et exemples
+
+</td>
+</tr>
+</table>
 
 ---
 
 ## 🎯 Objectif
 
-Créer et tester un service SOAP offrant deux opérations :
-1. **SayHello** : Retourne un message de salutation personnalisé
-2. **FindPerson** : Retourne un objet Person sérialisé en XML
+Ce projet implémente un **service SOAP sécurisé** offrant deux opérations :
 
-## 🚀 Démarrage rapide
+| Opération | Description | Entrée | Sortie |
+|:---------:|-------------|:------:|:------:|
+| 🗣️ **SayHello** | Message de salutation personnalisé | `name` (String) | `greeting` (String) |
+| 👤 **FindPerson** | Recherche d'une personne par ID | `id` (String) | `Person` (Object) |
 
-### Prérequis
-- Java 11+
-- Maven 3.6+
+---
 
-### Lancer le serveur
+## 🚀 Démarrage Rapide
 
-**Linux/Mac :**
+### 📋 Prérequis
+
+```
+☑️ Java 11 ou supérieur
+☑️ Maven 3.6 ou supérieur
+```
+
+### ⚡ Lancer le Serveur
+
+<table>
+<tr>
+<td width="50%">
+
+#### 🐧 Linux / Mac
+
 ```bash
 ./start-server.sh
 ```
 
-**Windows :**
+</td>
+<td width="50%">
+
+#### 🪟 Windows
+
 ```powershell
 mvn clean package -DskipTests
 mvn exec:java
 ```
 
-Le service sera accessible à : **http://localhost:8080/services/hello**
+</td>
+</tr>
+</table>
 
-WSDL disponible à : **http://localhost:8080/services/hello?wsdl**
+### 🌍 URLs du Service
 
-## 📁 Structure du projet
+| Description | URL |
+|-------------|-----|
+| 🔗 **Endpoint** | `http://localhost:8080/services/hello` |
+| 📄 **WSDL** | `http://localhost:8080/services/hello?wsdl` |
+
+---
+
+## 📁 Architecture du Projet
 
 ```
-src/main/java/com/acme/cxf/
-├── Server.java                      # Serveur principal avec WS-Security
-├── api/
-│   └── HelloService.java            # Interface du service (@WebService)
-├── impl/
-│   └── HelloServiceImpl.java        # Implémentation du service
-├── model/
-│   └── Person.java                  # Modèle de données JAXB
-├── security/
-│   └── ServerPasswordCallback.java  # Validation UsernameToken
-└── client/
-    ├── ClientTest.java              # Client de test automatisé
-    └── ClientPasswordCallback.java  # Credentials côté client
-
-Scripts/
-├── start-server.sh                  # Démarrer le serveur
-├── stop-server.sh                   # Arrêter le serveur
-└── run-client.sh                    # Exécuter le client de test
-
-Tests/
-├── test-sayHello.xml                # Test sans authentification
-├── test-findPerson.xml              # Test sans authentification
-├── test-sayHello-secure.xml         # Test avec UsernameToken
-└── test-findPerson-secure.xml       # Test avec UsernameToken
-
-Documentation/
-├── README.md                        # Ce fichier
-├── GUIDE_SOAPUI.md                  # Guide détaillé SoapUI
-├── RESOLUTION_ETAPE7.md             # Solutions aux problèmes
-├── AIDE_MEMOIRE.txt                 # Commandes rapides
-├── CHECKLIST_VALIDATION_FINALE.txt  # Validation complète
-└── SCENARIO_SOAPUI_SCREENSHOTS.txt  # Scénario de capture d'écran
+📦 src/main/java/com/acme/cxf/
+│
+├── 🖥️ Server.java                    ─── Serveur principal avec WS-Security
+│
+├── 📂 api/
+│   └── HelloService.java             ─── Interface du service (@WebService)
+│
+├── 📂 impl/
+│   └── HelloServiceImpl.java         ─── Implémentation du service
+│
+├── 📂 model/
+│   └── Person.java                   ─── Modèle de données JAXB
+│
+├── 📂 security/
+│   └── ServerPasswordCallback.java   ─── Validation UsernameToken
+│
+└── 📂 client/
+    ├── ClientTest.java               ─── Client de test automatisé
+    └── ClientPasswordCallback.java   ─── Credentials côté client
 ```
+
+---
+
+## 🔐 Sécurité WS-Security
+
+<div align="center">
+
+### 🛡️ Credentials d'Authentification
+
+| Paramètre | Valeur |
+|:---------:|:------:|
+| 👤 **Username** | `student` |
+| 🔑 **Password** | `secret123` |
+| 🔒 **Type** | `PasswordText` |
+
+</div>
+
+> ⚠️ **IMPORTANT** : Toutes les requêtes doivent inclure le header WS-Security pour être acceptées.
+
+---
 
 ## 🧪 Tests
 
-### Avec curl
+### 📋 Avec SoapUI
 
-**Test SayHello :**
-```bash
-curl -X POST -H "Content-Type: text/xml" \
-  -d @test-sayHello.xml \
-  http://localhost:8080/services/hello
-```
+<details>
+<summary><b>🗣️ Requête SayHello (Cliquez pour voir)</b></summary>
 
-**Réponse :**
 ```xml
-<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
-   <soap:Body>
-      <ns2:SayHelloResponse xmlns:ns2="http://api.cxf.acme.com/">
-         <greeting>Bonjour, Lachgar</greeting>
-      </ns2:SayHelloResponse>
-   </soap:Body>
-</soap:Envelope>
-```
-
-**Test FindPerson :**
-```bash
-curl -X POST -H "Content-Type: text/xml" \
-  -d @test-findPerson.xml \
-  http://localhost:8080/services/hello
-```
-
-**Réponse :**
-```xml
-<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
-   <soap:Body>
-      <ns2:FindPersonResponse xmlns:ns2="http://api.cxf.acme.com/">
-         <person>
-            <age>36</age>
-            <id>P-001</id>
-            <name>Ada Lovelace</name>
-         </person>
-      </ns2:FindPersonResponse>
-   </soap:Body>
-</soap:Envelope>
-```
-
-### Avec SoapUI
-
-Voir le guide détaillé : [GUIDE_SOAPUI.md](GUIDE_SOAPUI.md)
-
-#### � Requêtes SOAP complètes (copier-coller dans SoapUI)
-
-**⚠️ IMPORTANT : Le service nécessite WS-Security. Utilisez ces requêtes avec le header de sécurité.**
-
-**Requête SayHello avec authentification :**
-```xml
-<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:api="http://api.cxf.acme.com/">
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" 
+                  xmlns:api="http://api.cxf.acme.com/">
    <soapenv:Header>
       <wsse:Security xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
          <wsse:UsernameToken>
@@ -164,9 +180,14 @@ Voir le guide détaillé : [GUIDE_SOAPUI.md](GUIDE_SOAPUI.md)
 </soapenv:Envelope>
 ```
 
-**Requête FindPerson avec authentification :**
+</details>
+
+<details>
+<summary><b>👤 Requête FindPerson (Cliquez pour voir)</b></summary>
+
 ```xml
-<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:api="http://api.cxf.acme.com/">
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" 
+                  xmlns:api="http://api.cxf.acme.com/">
    <soapenv:Header>
       <wsse:Security xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
          <wsse:UsernameToken>
@@ -183,184 +204,229 @@ Voir le guide détaillé : [GUIDE_SOAPUI.md](GUIDE_SOAPUI.md)
 </soapenv:Envelope>
 ```
 
-#### �📸 Screenshots des Tests SoapUI
+</details>
 
-**1. Projet SoapUI créé avec les opérations**
-
-![SoapUI Projet](Screen/01-soapui-projet.png)
-
-**2. Vue des opérations SayHello et FindPerson**
-
-![SoapUI Opérations](Screen/02-soapui-operations.png)
-
-**3. Exemple de requête SOAP**
-
-![Test Requête](Screen/03-test-requete.png)
-
-**4. Réponse du service**
-
-![Test Réponse](Screen/04-test-reponse.png)
-
-**5. Configuration WS-Security (UsernameToken)**
-
-![Configuration Auth](Screen/05-configuration-auth.png)
-
-**6. Résultat final avec authentification**
-
-![Résultat Final](Screen/06-resultat-final.png)
-
-## 🛠️ Technologies utilisées
-
-| Technologie | Version | Rôle |
-|-------------|---------|------|
-| Apache CXF | 3.5.5 | Framework SOAP |
-| JAX-WS API | 2.3.1 | API Web Services |
-| JAXB | 2.3.5 | Sérialisation XML |
-| Jetty | 9.x | Serveur HTTP embarqué |
-| Java | 11+ | Plateforme |
-
-## 📝 Fonctionnalités
-
-### Opération SayHello
-- **Entrée** : String name
-- **Sortie** : String greeting
-- **Exemple** : "Lachgar" → "Bonjour, Lachgar"
-
-### Opération FindPerson
-- **Entrée** : String id
-- **Sortie** : Person object
-- **Champs** : id, name, age
-- **Exemple** : "P-001" → Person(id="P-001", name="Ada Lovelace", age=36)
-
-## 🔧 Configuration Maven
-
-Le projet utilise :
-- `cxf-rt-frontend-jaxws` : Support JAX-WS
-- `cxf-rt-transports-http-jetty` : Transport HTTP avec Jetty
-- `jaxws-api` et `jaxws-rt` : API et runtime JAX-WS
-
-## 🔐 Sécurité WS-Security
-
-Le service est sécurisé avec WS-Security UsernameToken :
-
-- **Username** : `student`
-- **Password** : `secret123`
-- **Type** : PasswordText
-
-### Tests avec authentification
-
-**Requête SOAP avec UsernameToken :**
+### � Avec curl
 
 ```bash
+# Test SayHello
 curl -X POST -H "Content-Type: text/xml" \
   -d @test-sayHello-secure.xml \
   http://localhost:8080/services/hello
+
+# Test FindPerson  
+curl -X POST -H "Content-Type: text/xml" \
+  -d @test-findPerson-secure.xml \
+  http://localhost:8080/services/hello
 ```
 
-Le fichier `test-sayHello-secure.xml` contient le header WS-Security :
-
-```xml
-<soapenv:Header>
-  <wsse:Security xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
-    <wsse:UsernameToken>
-      <wsse:Username>student</wsse:Username>
-      <wsse:Password Type="...#PasswordText">secret123</wsse:Password>
-    </wsse:UsernameToken>
-  </wsse:Security>
-</soapenv:Header>
-```
-
-### Client Java
-
-Exécuter le client Java de test :
+### ☕ Avec le Client Java
 
 ```bash
-./run-client.sh
+./run-client.sh        # Linux/Mac
+mvn exec:java -Dexec.mainClass="com.acme.cxf.client.ClientTest"  # Windows
 ```
-
-Le client effectue 4 tests automatiques :
-1. ❌ Test sans authentification (doit échouer)
-2. ✅ SayHello avec authentification
-3. ✅ FindPerson avec authentification
-4. ✅ Tests multiples avec différents noms
-
-## 📦 Build
-
-```bash
-mvn clean package
-```
-
-## 🎓 Points d'apprentissage
-
-1. **Annotations JAX-WS** : `@WebService`, `@WebMethod`, `@WebParam`, `@WebResult`
-2. **Annotations JAXB** : `@XmlRootElement`, `@XmlElement`
-3. **Apache CXF** : Configuration et déploiement d'un service SOAP
-4. **Contrat WSDL** : Génération automatique depuis le code Java
-5. **Sérialisation** : Transformation automatique Java ↔ XML
-
-## ✅ Validation complète
-
-### Checklist de validation (30/30 critères ✅)
-
-| Critère | Status | Tests |
-|---------|--------|-------|
-| **WSDL accessible et parsable** | ✅ | curl + SoapUI |
-| **SayHello fonctionnel** | ✅ | curl + SoapUI + Client Java |
-| **FindPerson fonctionnel** | ✅ | curl + SoapUI + Client Java |
-| **Person sérialisé JAXB** | ✅ | Tous les champs (id, name, age) |
-| **Endpoint sécurisé** | ✅ | Refus sans token ❌ / Succès avec token ✅ |
-| **Code organisé** | ✅ | Packages api/, impl/, model/, security/, client/ |
-
-### Résultats des tests
-
-```bash
-# Test Client Java
-./run-client.sh
-
-═══════════════════════════════════════════════════════════
-  🧪 CLIENT JAVA - TEST DU SERVICE SOAP
-═══════════════════════════════════════════════════════════
-
-📋 TEST 1 : Appel sans authentification
-✅ ATTENDU : Accès refusé sans authentification
-
-📋 TEST 2 : Opération SayHello avec authentification
-✅ Succès !
-Requête  : sayHello("Lachgar")
-Réponse  : Bonjour, Lachgar
-
-📋 TEST 3 : Opération FindPerson avec authentification
-✅ Succès !
-Requête  : findPersonById("P-001")
-Réponse  : Person {
-             id   = P-001
-             name = Ada Lovelace
-             age  = 36
-           }
-✅ Sérialisation JAXB validée : tous les champs présents
-
-📋 TEST 4 : Tests avec différents noms
-✅ Tous les tests réussis
-
-═══════════════════════════════════════════════════════════
-  ✅ VALIDATION COMPLÈTE TERMINÉE
-═══════════════════════════════════════════════════════════
-```
-
-### Documentation complète
-
-Pour plus de détails, consultez :
-
-- **[CHECKLIST_VALIDATION_FINALE.txt](CHECKLIST_VALIDATION_FINALE.txt)** - Validation détaillée de tous les critères
-- **[SCENARIO_SOAPUI_SCREENSHOTS.txt](SCENARIO_SOAPUI_SCREENSHOTS.txt)** - Scénario complet pour captures d'écran
-
-## 📚 Ressources
-
-- [Apache CXF Documentation](https://cxf.apache.org/)
-- [JAX-WS Tutorial](https://docs.oracle.com/javaee/7/tutorial/jaxws.htm)
-- [JAXB Tutorial](https://docs.oracle.com/javase/tutorial/jaxb/)
 
 ---
 
-**Auteur** : salah
-**Date** : 2025
+## 📸 Screenshots SoapUI
+
+<table>
+<tr>
+<td width="50%" align="center">
+
+**1️⃣ Projet SoapUI**
+
+![SoapUI Projet](Screen/01-soapui-projet.png)
+
+</td>
+<td width="50%" align="center">
+
+**2️⃣ Opérations**
+
+![SoapUI Opérations](Screen/02-soapui-operations.png)
+
+</td>
+</tr>
+<tr>
+<td width="50%" align="center">
+
+**3️⃣ Requête SOAP**
+
+![Test Requête](Screen/03-test-requete.png)
+
+</td>
+<td width="50%" align="center">
+
+**4️⃣ Réponse du Service**
+
+![Test Réponse](Screen/04-test-reponse.png)
+
+</td>
+</tr>
+<tr>
+<td width="50%" align="center">
+
+**5️⃣ Configuration Auth**
+
+![Configuration Auth](Screen/05-configuration-auth.png)
+
+</td>
+<td width="50%" align="center">
+
+**6️⃣ Résultat Final**
+
+![Résultat Final](Screen/06-resultat-final.png)
+
+</td>
+</tr>
+</table>
+
+---
+
+## 🛠️ Technologies Utilisées
+
+<div align="center">
+
+| Technologie | Version | Description |
+|:-----------:|:-------:|-------------|
+| <img src="https://img.shields.io/badge/Apache_CXF-3.5.5-D22128?style=flat-square&logo=apache" /> | `3.5.5` | Framework SOAP |
+| <img src="https://img.shields.io/badge/JAX--WS-2.3.1-007396?style=flat-square&logo=java" /> | `2.3.1` | API Web Services |
+| <img src="https://img.shields.io/badge/JAXB-2.3.5-5382A1?style=flat-square&logo=java" /> | `2.3.5` | Sérialisation XML |
+| <img src="https://img.shields.io/badge/Jetty-9.x-FC390E?style=flat-square&logo=eclipsejetty" /> | `9.x` | Serveur HTTP embarqué |
+| <img src="https://img.shields.io/badge/Java-11+-ED8B00?style=flat-square&logo=openjdk" /> | `11+` | Plateforme d'exécution |
+
+</div>
+
+---
+
+## ✅ Validation Complète
+
+<div align="center">
+
+### 📊 Checklist de Validation
+
+| Critère | Status | Méthode de Test |
+|:--------|:------:|:----------------|
+| WSDL accessible et parsable | ✅ | curl + SoapUI |
+| SayHello fonctionnel | ✅ | curl + SoapUI + Client Java |
+| FindPerson fonctionnel | ✅ | curl + SoapUI + Client Java |
+| Person sérialisé JAXB | ✅ | Tous les champs (id, name, age) |
+| Endpoint sécurisé | ✅ | Refus sans token / Succès avec token |
+| Code organisé | ✅ | Packages api/, impl/, model/, security/, client/ |
+
+</div>
+
+### 🧪 Résultats des Tests
+
+```
+═══════════════════════════════════════════════════════════════
+  🧪 CLIENT JAVA - TEST DU SERVICE SOAP
+═══════════════════════════════════════════════════════════════
+
+📋 TEST 1 : Appel sans authentification
+   ✅ ATTENDU : Accès refusé sans authentification
+
+📋 TEST 2 : Opération SayHello avec authentification
+   ✅ Succès !
+   ├─ Requête  : sayHello("Salah")
+   └─ Réponse  : Bonjour, Salah
+
+📋 TEST 3 : Opération FindPerson avec authentification
+   ✅ Succès !
+   ├─ Requête  : findPersonById("P-001")
+   └─ Réponse  : Person { id=P-001, name=Ada Lovelace, age=36 }
+
+📋 TEST 4 : Tests avec différents noms
+   ✅ Tous les tests réussis
+
+═══════════════════════════════════════════════════════════════
+  ✅ VALIDATION COMPLÈTE TERMINÉE - 4/4 TESTS PASSÉS
+═══════════════════════════════════════════════════════════════
+```
+
+---
+
+## 🎓 Points d'Apprentissage
+
+<table>
+<tr>
+<td width="50%">
+
+### 📝 Annotations JAX-WS
+- `@WebService`
+- `@WebMethod`
+- `@WebParam`
+- `@WebResult`
+
+</td>
+<td width="50%">
+
+### 📦 Annotations JAXB
+- `@XmlRootElement`
+- `@XmlElement`
+- `@XmlAccessorType`
+
+</td>
+</tr>
+<tr>
+<td width="50%">
+
+### 🔧 Apache CXF
+- Configuration endpoint
+- Déploiement Jetty
+- Intercepteurs WS-Security
+
+</td>
+<td width="50%">
+
+### 📄 WSDL
+- Génération automatique
+- Contract-first vs Code-first
+- Types complexes
+
+</td>
+</tr>
+</table>
+
+---
+
+## 📚 Ressources
+
+<div align="center">
+
+[![Apache CXF](https://img.shields.io/badge/Apache%20CXF-Documentation-D22128?style=for-the-badge&logo=apache)](https://cxf.apache.org/)
+[![JAX-WS](https://img.shields.io/badge/JAX--WS-Tutorial-007396?style=for-the-badge&logo=oracle)](https://docs.oracle.com/javaee/7/tutorial/jaxws.htm)
+[![JAXB](https://img.shields.io/badge/JAXB-Tutorial-5382A1?style=for-the-badge&logo=oracle)](https://docs.oracle.com/javase/tutorial/jaxb/)
+
+</div>
+
+---
+
+<div align="center">
+
+### 📂 Documentation Additionnelle
+
+| Document | Description |
+|:--------:|-------------|
+| 📖 [GUIDE_SOAPUI.md](GUIDE_SOAPUI.md) | Guide détaillé pour SoapUI |
+| ✅ [CHECKLIST_VALIDATION_FINALE.txt](CHECKLIST_VALIDATION_FINALE.txt) | Validation de tous les critères |
+| 📸 [SCENARIO_SOAPUI_SCREENSHOTS.txt](SCENARIO_SOAPUI_SCREENSHOTS.txt) | Scénario de captures d'écran |
+
+</div>
+
+---
+
+<div align="center">
+
+## 👨‍💻 Auteur
+
+**Salah**
+
+📅 *2025*
+
+---
+
+<sub>Made with ❤️ using Apache CXF & Java</sub>
+
+</div>
