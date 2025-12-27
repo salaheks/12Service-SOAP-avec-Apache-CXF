@@ -1,0 +1,8 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:api="http://api.cxf.acme.com/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <api:SayHello>
+         <name>Lachgar</name>
+      </api:SayHello>
+   </soapenv:Body>
+</soapenv:Envelope>

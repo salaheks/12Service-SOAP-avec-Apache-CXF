@@ -1,0 +1,8 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:api="http://api.cxf.acme.com/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <api:FindPerson>
+         <id>P-001</id>
+      </api:FindPerson>
+   </soapenv:Body>
+</soapenv:Envelope>
