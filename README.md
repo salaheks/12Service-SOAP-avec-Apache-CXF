@@ -249,38 +249,63 @@ mvn exec:java -Dexec.mainClass="com.acme.cxf.client.ClientTest"  # Windows
 </td>
 </tr>
 <tr>
-<td width="50%" align="center">
+<td width="100%" align="center" colspan="2">
 
-**3️⃣ Requête SOAP**
-
-![Test Requête](Screen/03-test-requete.png)
-
-</td>
-<td width="50%" align="center">
-
-**4️⃣ Réponse du Service**
-
-![Test Réponse](Screen/04-test-reponse.png)
-
-</td>
-</tr>
-<tr>
-<td width="50%" align="center">
-
-**5️⃣ Configuration Auth**
+**3️⃣ Configuration WS-Security**
 
 ![Configuration Auth](Screen/05-configuration-auth.png)
 
 </td>
-<td width="50%" align="center">
-
-**6️⃣ Résultat Final**
-
-![Résultat Final](Screen/06-resultat-final.png)
-
-</td>
 </tr>
 </table>
+
+---
+
+## 📤 Exemples de Réponses
+
+### 🗣️ Réponse SayHello
+
+**Requête :** `sayHello("Salah")`
+
+```xml
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+   <soap:Body>
+      <ns2:SayHelloResponse xmlns:ns2="http://api.cxf.acme.com/">
+         <greeting>Bonjour, Salah</greeting>
+      </ns2:SayHelloResponse>
+   </soap:Body>
+</soap:Envelope>
+```
+
+### 👤 Réponse FindPerson
+
+**Requête :** `findPersonById("P-001")`
+
+```xml
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+   <soap:Body>
+      <ns2:FindPersonResponse xmlns:ns2="http://api.cxf.acme.com/">
+         <person>
+            <id>P-001</id>
+            <name>Ada Lovelace</name>
+            <age>36</age>
+         </person>
+      </ns2:FindPersonResponse>
+   </soap:Body>
+</soap:Envelope>
+```
+
+### ✅ Résultat Final
+
+<div align="center">
+
+| Test | Status | Description |
+|:----:|:------:|-------------|
+| 🔒 Sans Auth | ❌ REFUSÉ | `SecurityError: A security error was encountered` |
+| 🗣️ SayHello | ✅ SUCCÈS | Retourne `Bonjour, {nom}` |
+| 👤 FindPerson | ✅ SUCCÈS | Retourne l'objet `Person` complet |
+
+</div>
 
 ---
 
